@@ -1,13 +1,13 @@
 # python-aerothermal
 
-python-aerothermal is a solution to acquire house consumptions data from i-DE (spanish electricity distribution company) and send it to Zabbix
+python-aerothermal is a solution to acquire house consumptions data from i-DE (spanish electricity distribution company) and send it to *Zabbix*.
 
 You have to prepare a server to create a daily job to launch the bash script which calls the Python script
 
 ## Installation
 
 The first thing you must do is creating a credentials file to access the frontend of i-DE. You have an .ini example in the distribution and could be copied into */etc* with access only available to the user without privileges.
-To track the success of the script we need to establish a logfile in */var/log/*. Again we need to give access to the user previously configured and add a *logrotate* file, also in the repository, to avoid the growth of the file withou control.
+To track the success of the script we need to establish a logfile in */var/log/*. Again we need to give access to the user previously configured and add a *logrotate* file, also in the repository, to avoid the growth of the file without control.
 Another thing you must do is creating a *Python* virtual environment in order to run the script (always with the unprivileged user):
 
 ```bash
