@@ -1,0 +1,9 @@
+/var/log/zabbix-iber.log {
+	rotate 30
+	daily
+	compress
+	delaycompress
+	missingok
+	notifempty
+	sharedscripts
+}
