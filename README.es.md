@@ -24,7 +24,7 @@ Una vez que todo lo anterior está configurado podemos crear el *cronjob* sólo 
 0 8 * * *   /bin/bash /home/metrics/python-aerothermal/zabbix_iber.sh -c /etc/credentials.ini -l /var/log/zabbix-iber.log >/dev/null 2>&1
 ```
 
-Como se puede ver en la línea anterior, anotada con el comando ```crontab -e```, se pueden ver los ficheros nombrados con anterioridad.
+La línea anterior fur creada con el comando ```crontab -e``` y se pueden ver los ficheros nombrados con anterioridad.
 
 La configuración del servidor *Zabbix* y del agente pueden ser consultados en mi [blog](https://libreadmin.es/new-post-just-to-remember-using-david-bowie-lets-dance/) y en [mi repositorio de GitHub](https://github.com/darkschneider16/home-infrastructure). En el futuro publicaré cómo crear el ítem en el que se anotan estas lecturas y quizá una plantilla con más datos relacionados.
 

@@ -24,7 +24,7 @@ Once you've setup everything you can create the *cronjob* just for the user:
 0 8 * * *   /bin/bash /home/metrics/python-aerothermal/zabbix_iber.sh -c /etc/credentials.ini -l /var/log/zabbix-iber.log >/dev/null 2>&1
 ```
 
-In the previous line, established with the command ```crontab -e```, you can see the files referred before.
+That was created with the command ```crontab -e``` and you can see the files referred before.
 
 The configuration of the *Zabbix* server and the agent can be consulted in my [blog](https://libreadmin.es/new-post-just-to-remember-using-david-bowie-lets-dance/) and in [my related GitHub repository](https://github.com/darkschneider16/home-infrastructure). In the future I'll share in my blog the item where the script sends the data inside the template which draws the state of the house.
 
