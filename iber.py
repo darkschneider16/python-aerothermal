@@ -19,33 +19,39 @@ class Iber:
     __domain = "https://www.i-de.es"
     __login_url = __domain + "/consumidores/rest/loginNew/login"
     __logout_url = __domain + "/consumidores/rest/loginNew/logOut"
-    __watthourmeter_url = __domain + "/consumidores/rest/escenarioNew/obtenerMedicionOnline/24"
+    __watthourmeter_url = __domain + \
+        "/consumidores/rest/escenarioNew/obtenerMedicionOnline/24"
     __icp_status_url = __domain + "/consumidores/rest/rearmeICP/consultarEstado"
     __contracts_url = __domain + "/consumidores/rest/cto/listaCtos/"
     __contract_detail_url = __domain + "/consumidores/rest/detalleCto/detalle/"
     __contract_selection_url = __domain + "/consumidores/rest/cto/seleccion/"
-    __obtener_escenarios_url = __domain + "/consumidores/rest/escenarioNew/obtenerEscenariosRest/"
-    __obtener_escenario_url = __domain + "/consumidores/rest/escenarioNew/refrescarEscenario/"
+    __obtener_escenarios_url = __domain + \
+        "/consumidores/rest/escenarioNew/obtenerEscenariosRest/"
+    __obtener_escenario_url = __domain + \
+        "/consumidores/rest/escenarioNew/refrescarEscenario/"
     __guardar_escenario_url = __domain + (
         "/consumidores/rest/escenarioNew/confirmarMedicionOnLine/{}/1/{}")
-    __borrar_escenario_url = __domain + "/consumidores/rest/escenarioNew/borrarEscenario/"
+    __borrar_escenario_url = __domain + \
+        "/consumidores/rest/escenarioNew/borrarEscenario/"
     __obtener_periodo_url = __domain + (
         "/consumidores/rest/consumoNew/obtenerDatosConsumoPeriodo/"
         "fechaInicio/{}00:00:00/fechaFinal/{}00:00:00/")
-            # date format: 07-11-2020 - that's 7 Nov 2020
+    # date format: 07-11-2020 - that's 7 Nov 2020
     __obtener_dia_url = __domain + (
         "/consumidores/rest/consumoNew/obtenerDatosConsumoDH/{}/{}/horas/USU/")
-            # date format: 07-11-2020 - that's 7 Nov 2020
+    # date format: 07-11-2020 - that's 7 Nov 2020
     __obtener_periodo_generacion_url = __domain + (
         "/consumidores/rest/consumoNew/obtenerDatosGeneracionPeriodo/"
         "fechaInicio/{}00:00:00/fechaFinal/{}00:00:00/")
-            # date format: 07-11-2020 - that's 7 Nov 2020
+    # date format: 07-11-2020 - that's 7 Nov 2020
+
+    __user_agent = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+                    " (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 
     __headers = {
-        'User-Agent': ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
-                       "Ubuntu Chromium/77.0.3865.90 Chrome/77.0.3865.90 Safari/537.36"),
-        'accept': "application/json; charset=utf-8",
-        'content-type': "application/json; charset=utf-8",
+        'User-Agent': __user_agent,
+        'accept': "application/json, text/plain, */*",
+        'content-type': "application/json; charset=UTF-8",
         'cache-control': "no-cache"
     }
 
@@ -77,7 +83,8 @@ class Iber:
     def measurement(self):
         """Returns a measurement from the powermeter."""
         self.__check_session()
-        response = self.__session.request("GET", self.__watthourmeter_url, headers=self.__headers)
+        response = self.__session.request(
+            "GET", self.__watthourmeter_url, headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
         if not response.text:
@@ -107,7 +114,8 @@ class Iber:
     def icpstatus(self):
         """Returns the status of your ICP."""
         self.__check_session()
-        response = self.__session.request("POST", self.__icp_status_url, headers=self.__headers)
+        response = self.__session.request(
+            "POST", self.__icp_status_url, headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
         if not response.text:
@@ -120,7 +128,8 @@ class Iber:
     def contracts(self):
         """Returns the list of contracts"""
         self.__check_session()
-        response = self.__session.request("GET", self.__contracts_url, headers=self.__headers)
+        response = self.__session.request(
+            "GET", self.__contracts_url, headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
         if not response.text:
@@ -132,7 +141,8 @@ class Iber:
     def contract(self):
         """Return a given contract"""
         self.__check_session()
-        response = self.__session.request("GET", self.__contract_detail_url, headers=self.__headers)
+        response = self.__session.request(
+            "GET", self.__contract_detail_url, headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
         if not response.text:
@@ -164,7 +174,7 @@ class Iber:
         json_response = response.json()
         return {
             "scene_names": json_response['y']['smps'],
-            "raw_response" : json_response
+            "raw_response": json_response
         }
 
     def scene_get(self, name):
@@ -182,9 +192,8 @@ class Iber:
             "name": json_response['nomEscenario'],
             "description": json_response['descripcion'],
             "consumption": json_response['numLcaInsta'],
-            "raw_response" : json_response
+            "raw_response": json_response
         }
-
 
     def scene_save(self, consumption, measurement_id, description):
         """Save scene"""
@@ -192,7 +201,8 @@ class Iber:
         name = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         save_data = f"{{\"nomEscenario\":\"{name}\",\"descripcion\":\"{description}\"}}"
         response = self.__session.request(
-            "POST", self.__guardar_escenario_url.format(consumption,measurement_id),
+            "POST", self.__guardar_escenario_url.format(
+                consumption, measurement_id),
             data=save_data, headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
@@ -201,7 +211,7 @@ class Iber:
         json_response = response.json()
         return {
             "name": json_response['nomEscenario'],
-            "raw_response" : json_response
+            "raw_response": json_response
         }
 
     def scene_delete(self, name):
@@ -281,8 +291,9 @@ class Iber:
         end_str = end.strftime('%d-%m-%Y')
 
         response = self.__session.request(
-            "GET", self.__obtener_periodo_generacion_url.format(start_str, end_str),
-                                          headers=self.__headers)
+            "GET", self.__obtener_periodo_generacion_url.format(
+                start_str, end_str),
+            headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
         if not response.text:
@@ -320,11 +331,10 @@ class Iber:
     def logout(self):
         """Logout"""
         self.__check_session()
-        response = self.__session.request("GET", self.__logout_url, headers=self.__headers)
+        response = self.__session.request(
+            "GET", self.__logout_url, headers=self.__headers)
         if response.status_code != 200:
             raise ResponseException(response.status_code)
         if not response.text:
             raise NoResponseException
         print(response.text)
-
-    
